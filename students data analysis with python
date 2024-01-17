@@ -1,0 +1,99 @@
+#we are going to do project in anaconda navigator
+import numpy as np
+import pandas as pd 
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+#read the csv file
+df = pd.read_csv("students dataset.csv")
+print(df.head())
+
+#describe the dataset
+df.describe()
+df.info()
+df.isnull().sum()
+
+#Drop unnamed column
+df=df.drop("Unnamed: 0",axis=1)
+print(df.head())
+
+#change weekly study hours column
+df["WklyStudyHours"]=df["WklyStudyHours"].str.replace("10-May","5-10")
+df.head()
+
+#gender distribution
+plt.figure(figsize=(5,5))
+ax=sns.countplot(data=df, x= "Gender")
+ax.bar_label(ax.containers[0])
+plt.title("Gender Distribution")
+plt.show()
+
+#from the above chart we have analyzed that
+#number of females in data is more than number of males
+gb = df.groupby("ParentEduc").agg ({"MathScore":'mean',"ReadingScore":'mean',"WritingScore":'mean'})
+print(gb)
+
+#Heatmap Relationship between Parent's education and student scores
+plt.figure(figsize=(4,4))
+sns.heatmap(gb,annot=True)
+plt.title("Relationship between Parent's education and student scores")
+plt.show()
+#from the above chart we have concluded that education of the parents have a impact on their subject mark
+
+gb1 = df.groupby("ParentMaritalStatus").agg ({"MathScore":'mean',"ReadingScore":'mean',"WritingScore":'mean'})
+print(gb1)
+
+#heatmap title gender distribution
+plt.figure(figsize=(4,4))
+sns.heatmap(gb1,annot=True)
+plt.title("Gender Distribution")
+plt.show()
+#from the above chart we have concluded that education of the parents have a impact on their subject mark
+
+gb1 = df.groupby("ParentMaritalStatus").agg ({"MathScore":'mean',"ReadingScore":'mean',"WritingScore":'mean'})
+print(gb1)
+
+plt.figure(figsize=(4,4))
+sns.heatmap(gb1,annot=True)
+plt.title("Gender Distribution")
+plt.show()
+#from the above chart we have concluded that there is no impact on the student scores due to their parent marital status 
+
+#boxplot for mathscore
+sns.boxplot(data=df, x = "MathScore")
+plt.show()
+
+#boxplot for Readingscore
+sns.boxplot(data=df, x = "ReadingScore")
+plt.show()
+
+#BoxPlot for writing Score
+sns.boxplot(data=df, x = "WritingScore")
+plt.show()
+
+#Distribution of ethnic Groups
+groupA = df.loc[(df['EthnicGroup'] == "group A")].count()
+print(groupA)
+
+#Distribution of ethnic groups
+groupA = df.loc[df['EthnicGroup'] == "group A"].count()['EthnicGroup']
+groupB = df.loc[df['EthnicGroup'] == "group B"].count()['EthnicGroup']
+groupC = df.loc[df['EthnicGroup'] == "group C"].count()['EthnicGroup']
+groupD = df.loc[df['EthnicGroup'] == "group D"].count()['EthnicGroup']
+groupE = df.loc[df['EthnicGroup'] == "group E"].count()['EthnicGroup']
+
+mlist = [groupA, groupB, groupC, groupD, groupE]
+print(mlist)
+
+labels = ["group A", "group B", "group C", "group D", "group E"]
+
+plt.pie(mlist, labels=labels, autopct="%1.2f%%")
+plt.title("Distribution of Ethnic Groups")
+plt.show()
+
+#Bar plot for ethnic group 
+ax=sns.countplot(data = df,x="EthnicGroup")
+ax.bar_label(ax.containers[0])
+
+
+
